@@ -1,0 +1,47 @@
+#include<bits/stdc++.h>
+using namespace std;
+int binary_search(vector<int>& price, int num){
+    int n = price.size();
+    int left = 0, right = n-1, ind = -1;
+    while(left<=right){
+        int mid = left+((right-left)/2);
+        if(price[mid]<=num){
+            ind = mid;
+            left = mid+1;
+        }
+        else right = mid-1;
+    }
+    return ind;
+}
+int main()
+{
+    int n , m;
+    cin >> n >> m;
+
+    vector<int> price(n);
+    vector<int> max_pay(m);
+
+    for(int i=0;i<n;i++) cin >> price[i];
+    for(int j=0;j<m;j++) cin >> max_pay[j];
+
+    sort(price.begin(),price.end());
+    //tracks can we take this particular price ticket
+    set<int> st;
+    for(int i=0;i<n;i++) st.insert(i);
+    vector<int> ans(m,-1);
+
+    for(int i=0;i<m;i++){
+        // returning the maximum index where ticket price is less than or equal to max_pay[i]
+        int ind = binary_search(price, max_pay[i]);
+        if(ind==-1) continue;
+
+        auto it = st.upper_bound(ind);
+        if(it==st.begin()) continue;
+        --it;
+        int to_take_ind = *it;
+        ans[i] = price[to_take_ind];
+        st.erase(it);
+    }
+
+    for(int i=0;i<m;i++) cout << ans[i] << " ";
+}
