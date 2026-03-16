@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+int main(){
+    int n; cin>>n;
+    vector<int> arr(n);
+    for(int i=0;i<n;i++) cin >> arr[i];
+ 
+    int left=0,right=0;
+    long long sum = 0, max_sum = INT_MIN;
+ 
+    while(right<n){
+        if(sum>=0){
+            sum += arr[right];
+            max_sum = max(max_sum, sum);
+            right++;
+        }
+        else{
+            if(right==left){
+                sum -= arr[left];
+                left++;
+                right++;
+            }
+            else{
+                sum -= arr[left];
+                left++;
+            }
+        }
+    }
+ 
+    cout << max_sum;
+}
