@@ -1,0 +1,24 @@
+#include<bits/stdc++.h>
+using namespace std;
+ 
+int main(){
+    long long n; cin >> n;
+    vector<long long> nums(n);
+    for(int i=0;i<n;i++) cin >> nums[i];
+ 
+    sort(nums.begin(),nums.end());
+ 
+    long long curr_reach = 0;
+    bool check = true;
+ 
+    for(int i=0;i<n;i++){
+        long long next_target = curr_reach+1;
+        if(nums[i]<=next_target) curr_reach += nums[i];
+        else{
+            check = false;
+            cout << next_target;
+            break;
+        }
+    }
+    if(check) cout << curr_reach+1;
+}
