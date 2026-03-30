@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    int n;cin >> n;
+    vector<int> nums(n);
+    for(int i=0;i<n;i++) cin >> nums[i];
+ 
+    multiset<int> st;
+    int count = 0;
+    for(int i=0;i<n;i++){
+        auto it = st.upper_bound(nums[i]);
+        if(it==st.end()){
+            count++;
+            st.insert(nums[i]);
+        }
+        else{
+            st.erase(it);
+            st.insert(nums[i]);
+        }
+    }
+    cout << count;
+}
