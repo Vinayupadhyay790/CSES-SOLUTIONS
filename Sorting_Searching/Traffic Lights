@@ -1,0 +1,36 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int x,n;
+    cin >> x >> n;
+ 
+    vector<int> nums(n);
+    for(int i=0;i<n;i++) cin >> nums[i];
+    
+    multiset<int> distance;
+    set<int> numbers;
+    numbers.insert(0);
+    numbers.insert(x);
+    distance.insert(x);
+    vector<int> ans(n);
+    for(int i=0;i<n;i++){
+        auto it = numbers.upper_bound(nums[i]);
+        auto it1 = it--;
+        
+        int dist = abs(*it-*it1);
+        auto it2 = distance.lower_bound(dist);
+        distance.erase(it2);
+ 
+        int dist1 = abs(*it-nums[i]);
+        int dist2 = abs(nums[i]-*it1);
+        distance.insert(dist1);
+        distance.insert(dist2);
+ 
+        auto maxi = distance.end();
+        maxi--;
+        numbers.insert(nums[i]);
+        ans[i] = *maxi;
+ 
+    }
+    for(int i=0;i<n;i++) cout << ans[i] << " ";
+}
