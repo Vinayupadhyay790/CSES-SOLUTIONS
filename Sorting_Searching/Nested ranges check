@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+bool static compare(vector<int>& a, vector<int>& b){
+    if(a[0]==b[0]) return a[1]>b[1];
+    else return a[0]<b[0];
+}
+int main()
+{
+    int n;cin >> n;
+    vector<vector<int>> ranges(n, vector<int> (3));
+    for(int i=0;i<n;i++){
+        cin>>ranges[i][0];
+        cin>>ranges[i][1];
+        ranges[i][2] = i;
+    }
+ 
+    sort(ranges.begin(),ranges.end(),compare);
+ 
+    vector<int> prefix_min(n);
+    vector<int> prefix_max(n);
+    prefix_min[n-1] = INT_MAX;
+    for(int i=n-2;i>=0;i--) prefix_min[i] = min(prefix_min[i+1],ranges[i+1][1]); 
+ 
+    prefix_max[0] = INT_MIN;
+    for(int i=1;i<n;i++) prefix_max[i] = max(prefix_max[i-1],ranges[i-1][1]);
+ 
+    vector<int> result1(n);
+    for(int i=0;i<n-1;i++){
+        int ind = ranges[i][2];
+        if(prefix_min[i]<=ranges[i][1]) result1[ind]=1;
+        else result1[ind] = 0;
+    }
+    for(int i=0;i<n;i++) cout << result1[i] << " ";
+ 
+ 
+    for(int i=0;i<n;i++){
+        int ind = ranges[i][2];
+        if(prefix_max[i]>=ranges[i][1]) result1[ind] = 1;
+        else result1[ind] = 0;
+    }
+ 
+    cout << endl;
+    for(int i=0;i<n;i++) cout << result1[i] << " ";
+}
