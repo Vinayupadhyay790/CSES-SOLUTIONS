@@ -1,0 +1,41 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main(){
+    int n; cin >> n;
+    vector<vector<int>> nums(n, vector<int> (3));
+ 
+    for(int i=0;i<n;i++){
+        cin >> nums[i][0];
+        cin >> nums[i][1];
+        nums[i][2] = i;
+    }
+    
+    sort(nums.begin(), nums.end());
+ 
+    multiset<vector<int>> st;      // stores end time and room number and index in original array
+    st.insert({nums[0][1],1,nums[0][2]});
+    int count = 1;
+ 
+    vector<int> ans(n);
+    ans[nums[0][2]] = 1;
+ 
+    for(int i=1;i<n;i++){
+        auto it = st.lower_bound({nums[i][0],-1,-1});
+        int ind = nums[i][2];
+        if(it == st.begin()){
+            count++;
+            ans[ind] = count;
+            st.insert({nums[i][1],count,ind});
+        }
+        else{
+            it--;
+            vector<int> x = *it;
+            int room_no = x[1];
+            st.erase(it);
+            ans[ind] = room_no;
+            st.insert({nums[i][1],room_no,ind});
+        }
+    }
+    cout << count << endl;
+    for(int i=0;i<n;i++) cout << ans[i] << " ";
+}
