@@ -1,0 +1,58 @@
+#include<bits/stdc++.h>
+using namespace std;
+// long long func(int idx ,vector<long long>& nums, long long sum, vector<vector<int>>& dp){
+    // if(idx<=-1){
+    //     if(sum==0) return 0;
+    //     else return 1e9;    
+    // }
+    // if(sum==0) return 0;
+    // if(dp[idx][sum]!=-1) return dp[idx][sum];
+ 
+    // long long take = 1e9, not_take;
+    // if(nums[idx]<=sum) take = 1+func(idx,nums,sum-nums[idx],dp);
+    // not_take = func(idx-1,nums,sum,dp);
+ 
+    // return dp[idx][sum] = min(take,not_take);
+// }
+ 
+int main(){
+    long long n, x; cin >> n >> x;
+    vector<long long> nums(n);
+    for(int i=0;i<n;i++) cin >> nums[i];
+    sort(nums.begin(),nums.end());
+ 
+    // vector<vector<int>> dp(n+1, vector<int> (x+1,-1));
+    // long long z = func(n-1,nums,x,dp);
+    // if(z>=1e9) z = -1;
+    // cout << z;
+ 
+ 
+    // TABULATION NOT WORKING WE HAVE TO SPACE OPTIMIZE IT
+    // vector<vector<long long>> dp(n+1, vector<long long>(x+1,1e11));
+    // dp[0][0] = 0;
+ 
+    // for(int idx=1;idx<=n;idx++){
+    //     for(int sum = 0;sum<=x;sum++){
+    //         long long take = 1e11, not_take;
+    //         if(nums[idx-1]<=sum) take = 1+dp[idx][sum-nums[idx-1]];
+    //         not_take = dp[idx-1][sum];
+    //         dp[idx][sum] = min(take,not_take);
+    //     }
+    // }
+ 
+    // cout << ((dp[n][x]>=1e11) ? -1 : dp[n][x]);
+ 
+    vector<long long> dp(x+1,1e9);
+    dp[0] = 0;
+    for(int idx = 1; idx<=n; idx++){
+        for(int sum = 0; sum<=x;sum++){
+            long long take = 1e9, not_take;
+            if(nums[idx-1]<=sum) take = 1+dp[sum-nums[idx-1]];
+            not_take = dp[sum];
+ 
+            dp[sum] = min(take,not_take);
+        }
+    }
+ 
+    cout << ((dp[x]>=1e9) ? -1 : dp[x]);
+}
